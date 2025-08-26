@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>MCH Music Player</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #1f1f1f, #3a3a3a);
+      font-family: sans-serif;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    p {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    audio {
+      width: 100%;
+      max-width: 300px;
+      margin: 10px 0;
+    }
+    .controls {
+      margin: 10px;
+    }
+    .controls button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #555;
+      color: white;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      margin: 20px auto;
+      max-width: 320px;
+    }
+    li {
+      padding: 10px;
+ background: #444;
+      margin: 5px 0;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    li:hover {
+      background: #666;
+    }
+    .now-playing {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MCH MUSIC 🎧</h1>
+  <p>Appuyez sur une chanson pour commencer</p>
+
+  <div class="player">
+    <audio id="player" controls></audio>
+    <div class="controls">
+      <button onclick="prev()">⏮️</button>
+      <button onclick="toggle()">⏯️</button>
+      <button onclick="next()">⏭️</button>
+    </div>
+    <div class="now-playing" id="nowPlaying">Aucune lecture</div>
+  </div>
+
+  <ul id="playlist"></ul>
+
+  <script>
+    const tracks = [
+      "a_INTRO.mp3",
+      "b_DOJOB_-Suis-je fils de mon oncle.mp3",
+      "b_DOJOB-Qui vit le malheur.mp3",
+      "c_ANELKA_-Esprit-Soldat.mp3",
+      "c_ANELKA-Afrique berceau de l'humanité.mp3",
+      "c_ANELKA-Le-Savant_ft_Lysette.mp3",
+      "c_ANELKA-Frachise.mp3",
+      "c_MOS_ft_NESTOR-Je-te-donne-mon-cœur.mp3",
+      "c_MOS-Maman ma flamme.mp3",
+      "d_CK_CHIS_A L'HONNEUR DE MAMAN.mp3",
+      "d_CK-CHRIS_guerres.mp3",
+      "d_ROSINE_Kijané (by Dojob).mp3",
+      "e_JASON_Quand tu vera sofie.mp3",
+      "e_MCH-Ne les laissons pas faire.mp3",
+      "Jeady_Jay_-_Ayéyé__Nous_aussi.mp3"
+    ];
+ let index = 0;
+    const player = document.getElementById("player");
+    const playlist = document.getElementById("playlist");
+    const nowPlaying = document.getElementById("nowPlaying");
+
+    tracks.forEach((track, i) => {
+      const li = document.createElement("li");
+      li.textContent = track;
+      li.onclick = () => playTrack(i);
+      playlist.appendChild(li);
+    });
+
+    function playTrack(i) {
+      index = i;
+      player.src = tracks[index];
+      nowPlaying.textContent = "Lecture : " + tracks[index];
+      player.play();
+    }
+
+    function next() {
+      index = (index + 1) % tracks.length;
+      playTrack(index);
+    }
+
+    function prev() {
+      index = (index - 1 + tracks.length) % tracks.length;
+      playTrack(index);
+    }
+
+    function toggle() {
+      if (player.paused) player.play();
+      else player.pause();
+    }
+
+    player.addEventListener("ended", next);
+  </script>
+
+</body>
+</html>
